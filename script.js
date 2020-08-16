@@ -1,11 +1,12 @@
-// BASS
+// GUITAR ON TOP, IMPROV
 
-// let bassSampler = new Tone.Sampler({
-//     urls: {
-//         'A1': 'https://raw.githubusercontent.com/nbrosowsky/tonejs-instruments/master/samples/contrabass/A1.mp3',
-//     },
-//     volume: -2
-// }).toDestination();
+let guitarSampler = new Tone.Sampler({
+    urls: {
+        'A1': 'https://raw.githubusercontent.com/nbrosowsky/tonejs-instruments/master/samples/guitar-acoustic/A1.mp3',
+        'A2': 'https://raw.githubusercontent.com/nbrosowsky/tonejs-instruments/master/samples/guitar-acoustic/A2.mp3',
+        'A3': 'https://raw.githubusercontent.com/nbrosowsky/tonejs-instruments/master/samples/guitar-acoustic/A3.mp3',
+    }
+}).toDestination();
 
 
 // RANDOM TALKING
@@ -15,6 +16,7 @@ let talkingSampler = new Tone.Players({
         her: 'assets/herquote.mp3', //very quiet file
         exmachina: 'assets/exmachinaquote.mp3', //way too loud now
     },
+    volume: -12
 }).toDestination();
 
 // NATURE SOUNDS
@@ -23,7 +25,7 @@ let natureSampler = new Tone.Players({
     urls: {
         rain: 'assets/rain.wav'
     },
-    volume: -6
+    volume: -12
 }).toDestination();
 
 // PIANOS
@@ -36,32 +38,40 @@ let chordSampler = new Tone.Sampler({
         'A3': 'https://raw.githubusercontent.com/nbrosowsky/tonejs-instruments/master/samples/piano/A3.mp3',
         'A4': 'https://raw.githubusercontent.com/nbrosowsky/tonejs-instruments/master/samples/piano/A4.mp3'
     },
-    volume: -5
+    volume: -6
 }).toDestination();
 
 
 // DRUMS
 let drumPlayers = new Tone.Players({
-    kick: 'https://teropa.info/ext-assets/drumkit/kick.mp3',
-    hatClosed: 'https://teropa.info/ext-assets/drumkit/hatClosed.mp3',
-    hatOpen: 'https://teropa.info/ext-assets/drumkit/hatOpen2.mp3',
-    snare: 'https://teropa.info/ext-assets/drumkit/snare3.mp3',
-    tomLow: 'https://teropa.info/ext-assets/drumkit/tomLow.mp3',
-    tomMid: 'https://teropa.info/ext-assets/drumkit/tomMid.mp3',
-    tomHigh: 'https://teropa.info/ext-assets/drumkit/tomHigh.mp3',
-    ride: 'https://teropa.info/ext-assets/drumkit/ride.mp3',
-    crash: 'https://teropa.info/ext-assets/drumkit/hatOpen.mp3',
+    urls: {
+        kick: 'https://teropa.info/ext-assets/drumkit/kick.mp3',
+        hatClosed: 'https://teropa.info/ext-assets/drumkit/hatClosed.mp3',
+        hatOpen: 'https://teropa.info/ext-assets/drumkit/hatOpen2.mp3',
+        snare: 'https://teropa.info/ext-assets/drumkit/snare3.mp3',
+        tomLow: 'https://teropa.info/ext-assets/drumkit/tomLow.mp3',
+        tomMid: 'https://teropa.info/ext-assets/drumkit/tomMid.mp3',
+        tomHigh: 'https://teropa.info/ext-assets/drumkit/tomHigh.mp3',
+        ride: 'https://teropa.info/ext-assets/drumkit/ride.mp3',
+        crash: 'https://teropa.info/ext-assets/drumkit/hatOpen.mp3',
+    },
+    volume: -12
 }).toDestination();
 
 
-// BASS needs work
+// GUITAR PATTERN
 
-// const thatRainyDayBassPattern = [
-//     ['0:0:0', 'G0'],
-//     ['1:0:0', 'E0'],
-//     ['2:0:0', 'A0'],
-//     ['3:0:0', 'D0'],
-// ]
+const thatRainyDayGuitarPattern = [
+    ['0:1:0', 'G3'],
+    ['0:1:2', 'D3'],
+    ['0:1:3', 'D4'],
+    ['2:1:0', 'A3'],
+    ['2:1:1', 'G3'],
+    ['2:1:2', 'A3'],
+    ['2:1:3', 'D4']
+]
+
+
 // CHORDS
 
 const thatRainyDayChordPattern = [
@@ -143,12 +153,13 @@ const talkingLoop = [
 
 // BASS PLAYER
 
-// let bassPart = new Tone.Part((time, note) => {
-//     bassSampler.triggerAttackRelease(note, 4.0, time);
-// }, thatRainyDayBassPattern).start();
-// bassPart.loop = true;
-// bassPart.loopStart = 0;
-// bassPart.loopEnd = '8'
+let guitarPart = new Tone.Part((time, note) => {
+    guitarSampler.triggerAttackRelease(note, 4.0, time);
+}, thatRainyDayGuitarPattern).start();
+guitarPart.loop = true;
+guitarPart.loopStart = 0;
+let guitarLoopLength = '8';
+guitarPart.loopEnd = guitarLoopLength;
 
 // CHORD PLAYER
 
@@ -192,8 +203,64 @@ document.getElementById('start').onclick = async () => {
     });
     Tone.Transport.bpm.value = 90;
     Tone.Transport.start();
+    Tone.context.lookAhead = 0.5;
+    Tone.Transport.scheduleRepeat(function (time) {
+        generateNewSolo();
+    }, "8:0:0", "8:0:0");
 };
 
 document.getElementById('stop').onclick = async () => {
     Tone.Transport.stop();
 };
+
+
+
+
+
+
+
+// MAGENTA STUFF
+
+let improvRNN = new music_rnn.MusicRNN('https://storage.googleapis.com/magentadata/js/checkpoints/music_rnn/chord_pitches_improv');
+let improvRNNLoaded = improvRNN.initialize();
+
+const generateNewSolo = async () => {
+    await improvRNNLoaded;
+
+    let sixteenthNoteTicks = Tone.Time('16n').toTicks();
+
+    let original = {
+        notes: thatRainyDayGuitarPattern.map(([time, note]) => ({
+            pitch: Tone.Frequency(note).toMidi(),
+            quantizedStartStep: Tone.Time(time).toTicks() / sixteenthNoteTicks,
+            quantizedEndStep: Tone.Time(time).toTicks() / sixteenthNoteTicks +1
+        })),
+        totalQuantizedSteps: 32,
+        quantizationInfo: { stepsPerQuarter: 4 }
+    }
+
+    let steps = 64;
+    let temperature = 1.1;
+    let chordProgression = ['G7', 'E7', 'C6', 'Cdim']
+
+    let result = await improvRNN.continueSequence(original, steps, temperature, chordProgression);
+    
+    let newPart = convertNotesToTone(result.notes);
+    console.log(newPart);
+    guitarPart.clear();
+    guitarLoopLength = '16';
+
+    for (let i = 0; i < newPart.length; i++) {
+        guitarPart.at(newPart[i][0], newPart[i][1]);
+    }
+}
+
+const convertNotesToTone = (notes) => {
+    let newPattern = []
+    for (let i = 0; i < notes.length; i++) {
+        let toneTime = Tone.Time(notes[i].quantizedStartStep / 8).toBarsBeatsSixteenths();
+        let toneNote = Tone.Frequency(notes[i].pitch, 'midi').toNote();
+        newPattern.push([toneTime, toneNote]);
+    }
+    return newPattern;
+}
