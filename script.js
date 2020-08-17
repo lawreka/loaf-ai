@@ -1,6 +1,13 @@
+let chordsSelected = 'rainyDay';
+let drumsSelected = 'shoals';
+let natureSoundsSelected = 'rain';
+let talkingSelected = 'her';
+let guitarSelected = 'rainyDay';
+
+
 // GUITAR ON TOP, IMPROV
 
-let guitarSampler = new Tone.Sampler({
+const guitarSampler = new Tone.Sampler({
     urls: {
         'A1': 'https://raw.githubusercontent.com/nbrosowsky/tonejs-instruments/master/samples/guitar-acoustic/A1.mp3',
         'A2': 'https://raw.githubusercontent.com/nbrosowsky/tonejs-instruments/master/samples/guitar-acoustic/A2.mp3',
@@ -11,7 +18,7 @@ let guitarSampler = new Tone.Sampler({
 
 // RANDOM TALKING
 
-let talkingSampler = new Tone.Players({
+const talkingSampler = new Tone.Players({
     urls: {
         her: 'assets/herquote.mp3', //very quiet file
         exmachina: 'assets/exmachinaquote.mp3', //way too loud now
@@ -21,7 +28,7 @@ let talkingSampler = new Tone.Players({
 
 // NATURE SOUNDS
 
-let natureSampler = new Tone.Players({
+const natureSampler = new Tone.Players({
     urls: {
         rain: 'assets/rain.wav'
     },
@@ -30,7 +37,7 @@ let natureSampler = new Tone.Players({
 
 // PIANOS
 
-let chordSampler = new Tone.Sampler({
+const chordSampler = new Tone.Sampler({
     urls: {
         'A0': 'https://raw.githubusercontent.com/nbrosowsky/tonejs-instruments/master/samples/piano/A0.mp3',
         'A1': 'https://raw.githubusercontent.com/nbrosowsky/tonejs-instruments/master/samples/piano/A1.mp3',
@@ -43,7 +50,7 @@ let chordSampler = new Tone.Sampler({
 
 
 // DRUMS
-let drumPlayers = new Tone.Players({
+const drumPlayers = new Tone.Players({
     urls: {
         kick: 'https://teropa.info/ext-assets/drumkit/kick.mp3',
         hatClosed: 'https://teropa.info/ext-assets/drumkit/hatClosed.mp3',
@@ -60,102 +67,110 @@ let drumPlayers = new Tone.Players({
 
 
 // GUITAR PATTERN
-
-const thatRainyDayGuitarPattern = [
-    ['0:1:0', 'G3'],
-    ['0:1:2', 'D3'],
-    ['0:1:3', 'D4'],
-    ['2:1:0', 'A3'],
-    ['2:1:1', 'G3'],
-    ['2:1:2', 'A3'],
-    ['2:1:3', 'D4']
-]
+const guitarPatterns = {
+    rainyDay: [
+        ["0:1:0", "G3"],
+        ["0:1:2", "D3"],
+        ["0:1:3", "D4"],
+        ["2:1:0", "A3"],
+        ["2:1:1", "G3"],
+        ["2:1:2", "A3"],
+        ["2:1:3", "D4"],
+    ]
+};
 
 
 // CHORDS
 
-const thatRainyDayChordPattern = [
-    ['0:0:0', 'G1'],
-    ['0:0:1', 'D2'],
-    ['0:0:2', 'F#2'],
-    ['0:0:3', 'B2'],
-    ['0:0:4', 'D3'],
-    ['0:1:0', 'G1'],
-    ['0:1:0', 'D2'],
-    ['0:1:0', 'F#2'],
-    ['0:1:0', 'B2'],
-    ['0:1:0', 'D3'],
-    ['1:0:0', 'E2'],
-    ['1:0:1', 'G#2'],
-    ['1:0:2', 'A#2'],
-    ['1:0:3', 'D3'],
-    ['1:0:4', 'A#3'],
-    ['2:0:0', 'A1'],
-    ['2:0:1', 'E2'],
-    ['2:0:2', 'G2'],
-    ['2:0:3', 'C3'],
-    ['2:0:4', 'D3'],
-    ['2:1:0', 'A1'],
-    ['2:1:0', 'E2'],
-    ['2:1:0', 'G2'],
-    ['2:1:0', 'C3'],
-    ['2:1:0', 'D3'],
-    ['3:0:0', 'D2'],
-    ['3:0:0', 'C4'],
-    ['3:0:1', 'F#2'],
-    ['3:0:2', 'C3'],
-    ['3:0:3', 'D#3'],
-    ['3:0:4', 'F#3'],
-    ['3:2:0', 'G4'],
-]
+const chordPatterns = {
+    rainyDay: [
+        ['0:0:0', 'G1'],
+        ['0:0:1', 'D2'],
+        ['0:0:2', 'F#2'],
+        ['0:0:3', 'B2'],
+        ['0:0:4', 'D3'],
+        ['0:1:0', 'G1'],
+        ['0:1:0', 'D2'],
+        ['0:1:0', 'F#2'],
+        ['0:1:0', 'B2'],
+        ['0:1:0', 'D3'],
+        ['1:0:0', 'E2'],
+        ['1:0:1', 'G#2'],
+        ['1:0:2', 'A#2'],
+        ['1:0:3', 'D3'],
+        ['1:0:4', 'A#3'],
+        ['2:0:0', 'A1'],
+        ['2:0:1', 'E2'],
+        ['2:0:2', 'G2'],
+        ['2:0:3', 'C3'],
+        ['2:0:4', 'D3'],
+        ['2:1:0', 'A1'],
+        ['2:1:0', 'E2'],
+        ['2:1:0', 'G2'],
+        ['2:1:0', 'C3'],
+        ['2:1:0', 'D3'],
+        ['3:0:0', 'D2'],
+        ['3:0:0', 'C4'],
+        ['3:0:1', 'F#2'],
+        ['3:0:2', 'C3'],
+        ['3:0:3', 'D#3'],
+        ['3:0:4', 'F#3'],
+        ['3:2:0', 'G4'],
+    ]
+}
 
 
 // DRUM LOOPS
-let drumPattern = [
-    ['0:0:0', 'kick'],
-    ['0:1:0', 'hatClosed'],
-    ['0:1:2', 'kick'],
-    ['0:2:0', 'kick'],
-    ['0:3:0', 'hatClosed'],
-    ['1:0:0', 'kick'],
-    ['1:1:0', 'hatClosed'],
-    ['1:2:0', 'kick'],
-    ['1:2:3', 'snare'],
-    ['1:3:0', 'hatClosed'],
-    ['1:3:2', 'kick'],
-    ['1:3:2', 'crash'],
-    ['2:0:0', 'kick'],
-    ['2:1:0', 'hatClosed'],
-    ['2:1:2', 'kick'],
-    ['2:2:0', 'kick'],
-    ['2:3:0', 'hatClosed'],
-    ['3:0:0', 'kick'],
-    ['3:1:0', 'hatClosed'],
-    ['3:2:0', 'kick'],
-    ['3:2:3', 'kick'],
-    ['3:3:0', 'hatClosed'],
-    ['3:3:2', 'kick'],
-    ['3:3:2', 'snare'],
-];
+
+const drumPatterns = {
+    shoals: [
+        ["0:0:0", "kick"],
+        ["0:1:0", "hatClosed"],
+        ["0:1:2", "kick"],
+        ["0:2:0", "kick"],
+        ["0:3:0", "hatClosed"],
+        ["1:0:0", "kick"],
+        ["1:1:0", "hatClosed"],
+        ["1:2:0", "kick"],
+        ["1:2:3", "snare"],
+        ["1:3:0", "hatClosed"],
+        ["1:3:2", "kick"],
+        ["1:3:2", "crash"],
+        ["2:0:0", "kick"],
+        ["2:1:0", "hatClosed"],
+        ["2:1:2", "kick"],
+        ["2:2:0", "kick"],
+        ["2:3:0", "hatClosed"],
+        ["3:0:0", "kick"],
+        ["3:1:0", "hatClosed"],
+        ["3:2:0", "kick"],
+        ["3:2:3", "kick"],
+        ["3:3:0", "hatClosed"],
+        ["3:3:2", "kick"],
+        ["3:3:2", "snare"],
+    ],
+};
 
 // NATURE SOUNDS LOOP
 
-const natureLoop = [
-    ['0:0:0', 'rain']
-];
+const naturePatterns = {
+    rain: [["0:0:0", "rain"]],
+};
 
 
 // RANDOM TALKING LOOP
 
-const talkingLoop = [
-    ['4:0:0', 'exmachina']
-];
+const talkingPatterns = {
+    her: [["4:0:0", "her"]],
+    exmachina: [['4:0:0', 'exmachina']]
+};
 
-// BASS PLAYER
+
+// GUITAR PLAYER
 
 let guitarPart = new Tone.Part((time, note) => {
     guitarSampler.triggerAttackRelease(note, 4.0, time);
-}, thatRainyDayGuitarPattern).start();
+}, guitarPatterns[guitarSelected]).start();
 guitarPart.loop = true;
 guitarPart.loopStart = 0;
 let guitarLoopLength = '8';
@@ -165,7 +180,7 @@ guitarPart.loopEnd = guitarLoopLength;
 
 let chordPart = new Tone.Part((time, note) => {
     chordSampler.triggerAttackRelease(note, 2.0, time);
-}, thatRainyDayChordPattern).start();
+}, chordPatterns[chordsSelected]).start();
 chordPart.loop = true;
 chordPart.loopStart = 0;
 chordPart.loopEnd = '8'
@@ -174,7 +189,7 @@ chordPart.loopEnd = '8'
 
 let drumPart = new Tone.Part((time, drum) => {
     drumPlayers.player(drum).start(time);
-}, drumPattern).start();
+}, drumPatterns[drumsSelected]).start();
 drumPart.loop = true;
 drumPart.loopStart = 0;
 drumPart.loopEnd = '8';
@@ -183,7 +198,7 @@ drumPart.loopEnd = '8';
 
 let naturePart = new Tone.Part((time, effect) => {
     natureSampler.player(effect).start(time);
-}, natureLoop).start();
+}, naturePatterns[natureSoundsSelected]).start();
 naturePart.loop = true;
 naturePart.loopStart = 0;
 naturePart.loopEnd = '16';
@@ -192,24 +207,33 @@ naturePart.loopEnd = '16';
 
 let talkingPart = new Tone.Part((time, effect) => {
     talkingSampler.player(effect).start(time);
-}, talkingLoop).start();
+}, talkingPatterns[talkingSelected]).start();
 talkingPart.loop = true;
 talkingPart.loopStart = 0;
 talkingPart.loopEnd = '32';
 
-document.getElementById('start').onclick = async () => {
+let startButton = document.getElementById("start");
+startButton.onclick = async () => {
     await Tone.loaded().then(() => {
         Tone.start();
     });
     Tone.Transport.bpm.value = 90;
     Tone.Transport.start();
     Tone.context.lookAhead = 0.5;
-    Tone.Transport.scheduleRepeat(function (time) {
+    startButton.disabled = true;
+    disableForm();
+    Tone.Transport.scheduleRepeat(
+        function (time) {
         generateNewSolo();
-    }, "8:0:0", "8:0:0");
+        },
+        "8:0:0",
+        "8:0:0"
+    );
 };
 
-document.getElementById('stop').onclick = async () => {
+let stopButton = document.getElementById('stop');
+stopButton.onclick = async () => {
+    startButton.disabled = false;
     Tone.Transport.stop();
 };
 
@@ -230,7 +254,7 @@ const generateNewSolo = async () => {
     let sixteenthNoteTicks = Tone.Time('16n').toTicks();
 
     let original = {
-        notes: thatRainyDayGuitarPattern.map(([time, note]) => ({
+        notes: guitarPatterns[guitarSelected].map(([time, note]) => ({
             pitch: Tone.Frequency(note).toMidi(),
             quantizedStartStep: Tone.Time(time).toTicks() / sixteenthNoteTicks,
             quantizedEndStep: Tone.Time(time).toTicks() / sixteenthNoteTicks +1
@@ -263,4 +287,31 @@ const convertNotesToTone = (notes) => {
         newPattern.push([toneTime, toneNote]);
     }
     return newPattern;
+}
+
+
+// UI
+
+const setChords = (input) => {
+    chordsSelected = input;
+    guitarSelected = input;
+};
+
+const setDrums = (input) => {
+    drumsSelected = input;
+}
+
+const setNatureSounds = (input) => {
+    natureSoundsSelected = input;
+}
+
+const setTalking = (input) => {
+    talkingSelected = input;
+}
+
+const disableForm = () => {
+    const formElements = document.getElementsByClassName('form-input');
+    for (let i = 0; i < formElements.length; i++) {
+        formElements[i].disabled = true;
+    }
 }

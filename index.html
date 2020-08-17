@@ -9,12 +9,41 @@
 </head>
 
 <body>
+    <div>Chords</div>
+    <form id='chords'>
+        <label>
+            <input class='form-input' type='radio' value='rainyDay' checked name='chords' onchange="setChords('rainyDay')"/>
+            here's that rainy day
+        </label>
+    </form>
+    <div>Drums</div>
+    <form id='drums'>
+        <label>
+            <input class='form-input' type='radio' value='shoals' checked name='drums' onchange="setDrums('shoals')" />
+            shoals
+        </label>
+    </form>
+    <div>Nature sounds</div>
+    <form id='natureSounds'>
+        <label>
+            <input class='form-input' type='radio' value='rain' checked name='natureSounds' onchange="setNatureSounds('rain')" />
+            rain
+        </label>
+    </form>
+    <div>Select quote</div>
+    <form id='talking'>
+        <label>
+            <input class='form-input' type='radio' value='her' checked name='talking'onchange="setTalking('her')" />
+            "I'm just looking at the world..."
+        </label>
+        <label>
+            <input class='form-input' type='radio' value='exmachina' name='talking' onchange="setTalking('exmachina')" />
+            "It makes me feel... sad"
+        </label>
+    </form>
     <button id='start'>start</button>
     <button id='stop'>stop</button>
-    <button id='noodle'>noodle</button>
-    <canvas id='canvas'></canvas>
-    <button id='playsample'>Play Sample</button>
 </body>
-<script src='script.js'></script>
+<script src='./script.js'></script>
 
 </html>
