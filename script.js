@@ -1,8 +1,9 @@
-let chordsSelected = 'rainyDay';
-let drumsSelected = 'shoals';
-let natureSoundsSelected = 'rain';
-let talkingSelected = 'her';
-let guitarSelected = 'rainyDay';
+let chordsSelected = JSON.parse(localStorage.getItem('chords'));
+let drumsSelected = JSON.parse(localStorage.getItem('drums'));
+let natureSoundsSelected = JSON.parse(localStorage.getItem('nature'));
+let talkingSelected = JSON.parse(localStorage.getItem('talking'));
+let guitarSelected = JSON.parse(localStorage.getItem('guitar'));
+let aiSelected = JSON.parse(localStorage.getItem('ai'));
 
 
 // GUITAR ON TOP, IMPROV
@@ -52,15 +53,20 @@ const chordSampler = new Tone.Sampler({
 // DRUMS
 const drumPlayers = new Tone.Players({
     urls: {
-        kick: 'https://teropa.info/ext-assets/drumkit/kick.mp3',
-        hatClosed: 'https://teropa.info/ext-assets/drumkit/hatClosed.mp3',
+        kick: 'assets/tero-kick.mp3',
+        kick2: 'assets/kick2.wav',
+        hatClosed: 'assets/tero-hatClosed.mp3',
+        hatClosed2: 'assets/tero-hatClosed2.mp3',
         hatOpen: 'https://teropa.info/ext-assets/drumkit/hatOpen2.mp3',
-        snare: 'https://teropa.info/ext-assets/drumkit/snare3.mp3',
+        snare: 'assets/snare.wav',
+        snare2: 'assets/tero-snare2.mp3',
+        snare3: 'assets/tero-snare3.mp3',
         tomLow: 'https://teropa.info/ext-assets/drumkit/tomLow.mp3',
         tomMid: 'https://teropa.info/ext-assets/drumkit/tomMid.mp3',
         tomHigh: 'https://teropa.info/ext-assets/drumkit/tomHigh.mp3',
         ride: 'https://teropa.info/ext-assets/drumkit/ride.mp3',
         crash: 'https://teropa.info/ext-assets/drumkit/hatOpen.mp3',
+        sticks: 'assets/sticks.wav',
     },
     volume: -12
 }).toDestination();
@@ -115,7 +121,46 @@ const chordPatterns = {
         ['3:0:2', 'C3'],
         ['3:0:3', 'D#3'],
         ['3:0:4', 'F#3'],
-        ['3:2:0', 'G4'],
+        ['3:2:0', 'G4']
+    ],
+    juniper: [
+        ['0:0:0', 'D#2'],
+        ['0:0:1', 'G2'],
+        ['0:0:2', 'A#2'],
+        ['0:0:3', 'D3'],
+        ['0:1:0', 'G3'],
+        ['0:1:1', 'A#2'],
+        ['0:1:2', 'D3'],
+        ['0:1:3', 'A#3'],
+        ['0:2:0', 'G4'],
+        ['1:0:0', 'D2'],
+        ['1:0:1', 'F2'],
+        ['1:0:2', 'A2'],
+        ['1:0:3', 'C3'],
+        ['1:1:0', 'A3'],
+        ['1:1:1', 'C4'],
+        ['2:0:0', 'D2'],
+        ['2:0:1', 'F2'],
+        ['2:0:2', 'A2'],
+        ['2:0:3', 'A3'],
+        ['2:1:0', 'C4'],
+        ['2:1:1', 'E4'],
+        ['2:1:2', 'C4'],
+        ['2:1:3', 'A3'],
+        ['3:0:0', 'C#2'],
+        ['3:0:1', 'F2'],
+        ['3:0:2', 'G#2'],
+        ['3:0:3', 'C3'],
+        ['3:1:0', 'F3'],
+        ['3:1:1', 'C4'],
+        ['3:2:0', 'C#2'],
+        ['3:2:1', 'F2'],
+        ['3:2:2', 'F3'],
+        ['3:2:3', 'D#4'],
+        ['3:3:0', 'G4'],
+        ['3:3:1', 'A#2'],
+        ['3:3:2', 'D#4'],
+        ['3:3:3', 'G4']
     ]
 }
 
@@ -132,7 +177,7 @@ const drumPatterns = {
         ["1:0:0", "kick"],
         ["1:1:0", "hatClosed"],
         ["1:2:0", "kick"],
-        ["1:2:3", "snare"],
+        ["1:2:3", "snare2"],
         ["1:3:0", "hatClosed"],
         ["1:3:2", "kick"],
         ["1:3:2", "crash"],
@@ -147,8 +192,37 @@ const drumPatterns = {
         ["3:2:3", "kick"],
         ["3:3:0", "hatClosed"],
         ["3:3:2", "kick"],
-        ["3:3:2", "snare"],
+        ["3:3:2", "snare2"],
     ],
+    lounge: [
+        ['0:0:0', 'kick2'],
+        ['0:1:0', 'snare'],
+        ['0:1:2', 'hatClosed'],
+        ['0:2:2', 'kick2'],
+        ['0:3:0', 'snare'],
+        ['0:3:3', 'hatClosed'],
+        ['1:0:0', 'kick2'],
+        ['1:1:0', 'snare'],
+        ['1:2:2', 'kick2'],
+        ['1:2:3', 'hatClosed'],
+        ['1:3:0', 'snare'],
+        ['1:3:2', 'hatOpen'],
+        ['2:0:0', 'kick2'],
+        ['2:0:3', 'hatClosed'],
+        ['2:1:0', 'snare'],
+        ['2:1:2', 'hatClosed'],
+        ['2:2:0', 'hatClosed'],
+        ['2:2:2', 'kick2'],
+        ['2:2:3', 'hatClosed'],
+        ['2:3:0', 'snare'],
+        ['2:3:1', 'hatClosed'],
+        ['3:0:0', 'kick2'],
+        ['3:1:0', 'snare'],
+        ['3:2:2', 'kick2'],
+        ['3:2:3', 'hatClosed'],
+        ['3:3:0', 'snare'],
+    ],
+    
 };
 
 // NATURE SOUNDS LOOP
@@ -222,19 +296,23 @@ startButton.onclick = async () => {
     Tone.context.lookAhead = 0.5;
     startButton.disabled = true;
     disableForm();
-    Tone.Transport.scheduleRepeat(
-        function (time) {
-        generateNewSolo();
-        },
-        "8:0:0",
-        "8:0:0"
-    );
+    if (aiSelected === "true") {
+        Tone.Transport.scheduleRepeat(
+            function (time) {
+                generateNewSolo();
+            },
+            "8:0:0",
+            "8:0:0"
+        );
+    }
+    
 };
 
 let stopButton = document.getElementById('stop');
 stopButton.onclick = async () => {
     startButton.disabled = false;
     Tone.Transport.stop();
+    enableForm();
 };
 
 
@@ -293,25 +371,36 @@ const convertNotesToTone = (notes) => {
 // UI
 
 const setChords = (input) => {
-    chordsSelected = input;
-    guitarSelected = input;
+    localStorage.setItem('chords', JSON.stringify(input));
+    // localStorage.setItem('guitar', JSON.stringify(input));
 };
 
 const setDrums = (input) => {
-    drumsSelected = input;
+    localStorage.setItem('drums', JSON.stringify(input));
 }
 
 const setNatureSounds = (input) => {
-    natureSoundsSelected = input;
+    localStorage.setItem('nature', JSON.stringify(input));
 }
 
 const setTalking = (input) => {
-    talkingSelected = input;
+    localStorage.setItem('talking', JSON.stringify(input));
+}
+
+const setAI = (input) => {
+    localStorage.setItem('ai', JSON.stringify(input));
 }
 
 const disableForm = () => {
     const formElements = document.getElementsByClassName('form-input');
     for (let i = 0; i < formElements.length; i++) {
         formElements[i].disabled = true;
+    }
+}
+
+const enableForm = () => {
+    const formElements = document.getElementsByClassName('form-input');
+    for (let i = 0; i < formElements.length; i++) {
+        formElements[i].disabled = false;
     }
 }

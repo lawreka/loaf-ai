@@ -12,33 +12,52 @@
     <div>Chords</div>
     <form id='chords'>
         <label>
-            <input class='form-input' type='radio' value='rainyDay' checked name='chords' onchange="setChords('rainyDay')"/>
+            <input class='form-input' type='radio' value='rainyDay' name='chords' onchange="setChords('rainyDay')"/>
             here's that rainy day
+        </label>
+        <label>
+            <input class='form-input' type='radio' value='juniper' name='chords' onchange="setChords('juniper')" />
+            juniper
         </label>
     </form>
     <div>Drums</div>
     <form id='drums'>
         <label>
-            <input class='form-input' type='radio' value='shoals' checked name='drums' onchange="setDrums('shoals')" />
+            <input class='form-input' type='radio' value='shoals' name='drums' onchange="setDrums('shoals')" />
             shoals
+        </label>
+        <label>
+            <input class='form-input' type='radio' value='lounge' name='drums' onchange="setDrums('lounge')" />
+            lounge
         </label>
     </form>
     <div>Nature sounds</div>
     <form id='natureSounds'>
         <label>
-            <input class='form-input' type='radio' value='rain' checked name='natureSounds' onchange="setNatureSounds('rain')" />
+            <input class='form-input' type='radio' value='rain' name='natureSounds' onchange="setNatureSounds('rain')" />
             rain
         </label>
     </form>
     <div>Select quote</div>
     <form id='talking'>
         <label>
-            <input class='form-input' type='radio' value='her' checked name='talking'onchange="setTalking('her')" />
+            <input class='form-input' type='radio' value='her' name='talking' onchange="setTalking('her')" />
             "I'm just looking at the world..."
         </label>
         <label>
             <input class='form-input' type='radio' value='exmachina' name='talking' onchange="setTalking('exmachina')" />
             "It makes me feel... sad"
+        </label>
+    </form>
+    <div>AI Soloist</div>
+    <form id='soloist'>
+        <label>
+            <input class='form-input' type='radio' value='ai-true' name='ai' onchange="setAI('true')" />
+            AI soloist on
+        </label>
+        <label>
+            <input class='form-input' type='radio' value='ai-false' name='ai' onchange="setAI('false')" />
+            AI soloist off
         </label>
     </form>
     <button id='start'>start</button>
