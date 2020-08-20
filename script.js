@@ -31,7 +31,10 @@ const talkingSampler = new Tone.Players({
 
 const natureSampler = new Tone.Players({
     urls: {
-        rain: 'assets/rain.wav'
+        rain: 'assets/rain.wav',
+        storm: 'assets/storm.wav',
+        vinyl: 'assets/vinyl.wav',
+        birds: 'assets/louderbirds.wav'
     },
     volume: -12
 }).toDestination();
@@ -46,7 +49,7 @@ const chordSampler = new Tone.Sampler({
         'A3': 'https://raw.githubusercontent.com/nbrosowsky/tonejs-instruments/master/samples/piano/A3.mp3',
         'A4': 'https://raw.githubusercontent.com/nbrosowsky/tonejs-instruments/master/samples/piano/A4.mp3'
     },
-    volume: -6
+    volume: -12
 }).toDestination();
 
 
@@ -161,6 +164,61 @@ const chordPatterns = {
         ['3:3:1', 'A#2'],
         ['3:3:2', 'D#4'],
         ['3:3:3', 'G4']
+    ],
+    ghibli: [
+        ['0:0:0', 'C2'],
+        ['0:0:0', 'A2'],
+        ['0:0:0', 'E3'],
+        ['0:0:0', 'E4'],        
+        ['0:0:2', 'D4'],
+        ['0:0:2', 'D3'],
+        ['0:1:0', 'E4'],
+        ['0:1:0', 'E3'],
+        ['0:1:2', 'A3'],
+        ['0:2:0', 'D2'],
+        ['0:2:0', 'B2'],
+        ['0:2:0', 'E3'],
+        ['0:2:0', 'E4'],
+        ['0:2:2', 'D4'],
+        ['0:2:2', 'D3'],
+        ['0:3:0', 'E4'],
+        ['0:3:0', 'E3'],
+        ['0:3:2', 'B3'],
+        ['1:0:0', 'C2'],
+        ['1:0:1', 'E2'],
+        ['1:0:2', 'G2'],
+        ['1:0:3', 'B2'],
+        ['1:1:1', 'E2'],
+        ['1:1:2', 'G2'],
+        ['1:1:3', 'B2'],
+        ['1:2:0', 'E3'],
+        ['2:0:0', 'C2'],
+        ['2:0:0', 'A2'],
+        ['2:0:0', 'E3'],
+        ['2:0:0', 'E4'],
+        ['2:0:2', 'D4'],
+        ['2:0:2', 'D3'],
+        ['2:1:0', 'E4'],
+        ['2:1:0', 'E3'],
+        ['2:1:2', 'A3'],
+        ['2:2:0', 'D2'],
+        ['2:2:0', 'B2'],
+        ['2:2:0', 'E3'],
+        ['2:2:0', 'E4'],
+        ['2:2:2', 'D4'],
+        ['2:2:2', 'D3'],
+        ['2:3:0', 'E4'],
+        ['2:3:0', 'E3'],
+        ['2:3:2', 'B3'],
+        ['3:0:0', 'C3'],
+        ['3:0:1', 'E3'],
+        ['3:0:2', 'G3'],
+        ['3:0:3', 'B3'],
+        ['3:1:0', 'C3'],
+        ['3:1:1', 'E3'],
+        ['3:1:2', 'G3'],
+        ['3:1:3', 'B3'],
+        ['3:2:0', 'E4'],
     ]
 }
 
@@ -222,13 +280,51 @@ const drumPatterns = {
         ['3:2:3', 'hatClosed'],
         ['3:3:0', 'snare'],
     ],
-    
+    anton: [
+        ['0:0:0', 'kick'],
+        ['0:0:2', 'hatClosed'],
+        ['0:1:0', 'kick'],
+        ['0:2:2', 'hatClosed'],
+        ['0:3:0', 'snare'],
+        ['0:3:2', 'hatClosed'],
+        ['1:0:2', 'hatClosed'],
+        ['1:1:0', 'snare'],
+        ['1:1:2', 'hatClosed2'],
+        ['1:2:2', 'kick'],
+        ['1:2:2', 'hatClosed'],
+        ['1:3:0', 'snare'],
+        ['1:3:2', 'hatClosed'],
+        ['2:0:0', 'kick'],
+        ['2:0:2', 'hatClosed'],
+        ['2:1:0', 'kick'],
+        ['2:2:2', 'hatClosed'],
+        ['2:3:0', 'snare'],
+        ['2:3:2', 'hatClosed'],
+        ['3:0:2', 'hatClosed'],
+        ['3:1:0', 'snare'],
+        ['3:1:2', 'hatClosed2'],
+        ['3:2:2', 'kick'],
+        ['3:2:2', 'hatClosed'],
+        ['3:3:0', 'snare'],
+        ['3:3:2', 'hatClosed']
+    ]    
 };
 
 // NATURE SOUNDS LOOP
 
 const naturePatterns = {
-    rain: [["0:0:0", "rain"]],
+    rain: [
+        ["0:0:0", "rain"],
+        ["0:0:0", "vinyl"]
+    ],
+    storm: [
+        ["0:0:0", "storm"],
+        ["0:0:0", "vinyl"]
+    ],
+    birds: [
+        ["0:0:0", "birds"],
+        ["0:0:0", "vinyl"]
+    ]
 };
 
 
