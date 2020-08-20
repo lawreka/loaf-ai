@@ -1,84 +1,98 @@
 <!DOCTYPE html>
 
 <head>
+    <title>c h i l l</title>
+    <meta name='viewport' content='width=device-width,initial-scale=1'>
+    <meta name='description' content='generative lo fi hip hop with magentajs'>
+    <link rel='shortcut icon' href='assets/flower.png' type='image/png'>
     <script src='https://cdn.jsdelivr.net/npm/tone@14.7.39/build/Tone.min.js'></script>
-    <script src="https://cdn.jsdelivr.net/npm/@magenta/music@^1.19.0"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-core@2.3.0/dist/tf-core.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@magenta/music@^1.19.0/es6/core.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@magenta/music@^1.19.0/es6/music_rnn.js"></script>
+    <script src='https://cdn.jsdelivr.net/npm/@magenta/music@^1.19.0'></script>
+    <script src='https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-core@2.3.0/dist/tf-core.min.js'></script>
+    <script src='https://cdn.jsdelivr.net/npm/@magenta/music@^1.19.0/es6/core.js'></script>
+    <script src='https://cdn.jsdelivr.net/npm/@magenta/music@^1.19.0/es6/music_rnn.js'></script>
+    <link rel='stylesheet' type='text/css' href='style.css' />
 </head>
 
 <body>
-    <div>Chords</div>
-    <form id='chords'>
-        <label>
-            <input class='form-input' type='radio' value='rainyDay' name='chords' onchange="setChords('rainyDay')"/>
-            here's that rainy day
-        </label>
-        <label>
-            <input class='form-input' type='radio' value='juniper' name='chords' onchange="setChords('juniper')" />
-            juniper
-        </label>
-        <label>
-            <input class='form-input' type='radio' value='ghibli' name='chords' onchange="setChords('ghibli')" />
-            ghibli
-        </label>
-    </form>
-    <div>Drums</div>
-    <form id='drums'>
-        <label>
-            <input class='form-input' type='radio' value='shoals' name='drums' onchange="setDrums('shoals')" />
-            shoals
-        </label>
-        <label>
-            <input class='form-input' type='radio' value='lounge' name='drums' onchange="setDrums('lounge')" />
-            lounge
-        </label>
-        <label>
-            <input class='form-input' type='radio' value='anton' name='drums' onchange="setDrums('anton')" />
-            anton
-        </label>
-    </form>
-    <div>Sound effects</div>
-    <form id='natureSounds'>
-        <label>
-            <input class='form-input' type='radio' value='rain' name='natureSounds' onchange="setNatureSounds('rain')" />
-            light rain
-        </label>
-        <label>
-            <input class='form-input' type='radio' value='storm' name='natureSounds' onchange="setNatureSounds('storm')" />
-            summer storm
-        </label>
-        <label>
-            <input class='form-input' type='radio' value='birds' name='natureSounds' onchange="setNatureSounds('birds')" />
-            birds
-        </label>
-    </form>
-    <div>Select quote</div>
-    <form id='talking'>
-        <label>
-            <input class='form-input' type='radio' value='her' name='talking' onchange="setTalking('her')" />
-            "I'm just looking at the world..."
-        </label>
-        <label>
-            <input class='form-input' type='radio' value='exmachina' name='talking' onchange="setTalking('exmachina')" />
-            "It makes me feel... sad"
-        </label>
-    </form>
-    <div>AI Soloist</div>
-    <form id='soloist'>
-        <label>
-            <input class='form-input' type='radio' value='ai-true' name='ai' onchange="setAI('true')" />
-            AI soloist on
-        </label>
-        <label>
-            <input class='form-input' type='radio' value='ai-false' name='ai' onchange="setAI('false')" />
-            AI soloist off
-        </label>
-    </form>
-    <button id='start'>start</button>
-    <button id='stop'>stop</button>
+    <div id='loading' class='invisible'>
+        <div id='loading-text'></div>
+    </div>
+    <div id='main-screen'>
+        <div id='menu-wrapper'>
+            <div class='form-heading'>Chords</div>
+            <form id='chords'>
+                <label>
+                    <input class='form-input' type='radio' value='rainyDay' name='chords' onchange="setChords('rainyDay')" checked />
+                    that rainy day
+                </label>
+                <label>
+                    <input class='form-input' type='radio' value='juniper' name='chords' onchange="setChords('juniper')" />
+                    juniper
+                </label>
+                <label>
+                    <input class='form-input' type='radio' value='ghibli' name='chords' onchange="setChords('ghibli')" />
+                    ghibli
+                </label>
+            </form>
+            <div class='form-heading'>Drums</div>
+            <form id='drums'>
+                <label>
+                    <input class='form-input' type='radio' value='shoals' name='drums' onchange="setDrums('shoals')" checked />
+                    shoals
+                </label>
+                <label>
+                    <input class='form-input' type='radio' value='lounge' name='drums' onchange="setDrums('lounge')" />
+                    lounge
+                </label>
+                <label>
+                    <input class='form-input' type='radio' value='anton' name='drums' onchange="setDrums('anton')" />
+                    anton
+                </label>
+            </form>
+            <div class='form-heading'>Sound effects</div>
+            <form id='natureSounds'>
+                <label>
+                    <input class='form-input' type='radio' value='rain' name='natureSounds' onchange="setNatureSounds('rain')" checked />
+                    light rain
+                </label>
+                <label>
+                    <input class='form-input' type='radio' value='storm' name='natureSounds' onchange="setNatureSounds('storm')" />
+                    summer storm
+                </label>
+                <label>
+                    <input class='form-input' type='radio' value='birds' name='natureSounds' onchange="setNatureSounds('birds')" />
+                    birds
+                </label>
+            </form>
+            <div class='form-heading'>Select quote</div>
+            <form id='talking'>
+                <label>
+                    <input class='form-input' type='radio' value='her' name='talking' onchange="setTalking('her')" checked />
+                    "I'm just looking at the world..."
+                </label>
+                <label>
+                    <input class='form-input' type='radio' value='exmachina' name='talking' onchange="setTalking('exmachina')" />
+                    "It makes me feel... sad"
+                </label>
+            </form>
+            <div class='form-heading'>AI Soloist</div>
+            <form id='soloist'>
+                <label>
+                    <input class='form-input' type='radio' value='ai-true' name='ai' onchange="setAI('true')" />
+                    on
+                </label>
+                <label>
+                    <input class='form-input' type='radio' value='ai-false' name='ai' onchange="setAI('false')" checked />
+                    off
+                </label>
+            </form>
+            <div id='buttons-wrapper'>
+                <button id='start' class='button'>start</button>
+                <button id='stop' class='button'>stop</button>
+            </div>
+            
+        </div>
+    </div>
 </body>
-<script src='./script.js'></script>
-
+<script src='./script2.js'></script>
 </html>

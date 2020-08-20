@@ -1,0 +1,80 @@
+body {
+    margin: 0;
+    font-family: sans-serif;
+}
+
+.visible {
+    display: flex;
+}
+
+.invisible {
+    display: none;
+}
+
+#loading {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 3;
+    width: 100vw;
+    height: 100vh;
+}
+
+#loading-text {
+    display: flex;
+    flex: 1 1 auto;
+    justify-content: center;
+    height: 100%;
+    align-items: center;
+    font-weight: 100;
+    background-color: #fff;
+}
+
+#main-screen {
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    background-image: url('assets/withcomputerleft.svg');
+    background-position-x: center;
+    background-position-y: bottom;
+    background-size: cover;
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 100vh;
+}
+
+#menu-wrapper {
+    position: relative;
+    width: max-content;
+    padding: 32px;
+    margin-top: 24px;
+}
+
+form {
+    margin-bottom: 16px;
+}
+
+.form-heading {
+    background-color: white;
+    padding: 4px;
+    border-radius: 2px;
+    width: max-content;
+}
+
+label {
+    background-color: white;
+    padding: 4px;
+}
+
+#buttons-wrapper {
+    padding: 16px 0px;
+}
+
+.button {
+    padding: 4px 16px;
+    border-radius: 4px;
+    background-color: white;
+    border: none;
+    margin-right: 8px;
+    font-size: 16px;
+}
