@@ -15,11 +15,11 @@
 
 <body>
     <div id='loading' class='invisible'>
-        <div id='loading-text'></div>
+        <img id='spinner' src='assets/spinner.gif'>
     </div>
     <div id='main-screen'>
         <div id='menu-wrapper'>
-            <div class='form-heading'>Chords</div>
+            <div class='form-heading enabled'>Chords</div>
             <form id='chords'>
                 <label>
                     <input class='form-input' type='radio' value='rainyDay' name='chords' onchange="setChords('rainyDay')" checked />
@@ -34,7 +34,7 @@
                     ghibli
                 </label>
             </form>
-            <div class='form-heading'>Drums</div>
+            <div class='form-heading enabled'>Drums</div>
             <form id='drums'>
                 <label>
                     <input class='form-input' type='radio' value='shoals' name='drums' onchange="setDrums('shoals')" checked />
@@ -49,7 +49,7 @@
                     anton
                 </label>
             </form>
-            <div class='form-heading'>Sound effects</div>
+            <div class='form-heading enabled'>Sound effects</div>
             <form id='natureSounds'>
                 <label>
                     <input class='form-input' type='radio' value='rain' name='natureSounds' onchange="setNatureSounds('rain')" checked />
@@ -64,7 +64,7 @@
                     birds
                 </label>
             </form>
-            <div class='form-heading'>Select quote</div>
+            <div class='form-heading enabled'>Select quote</div>
             <form id='talking'>
                 <label>
                     <input class='form-input' type='radio' value='her' name='talking' onchange="setTalking('her')" checked />
@@ -75,7 +75,7 @@
                     "It makes me feel... sad"
                 </label>
             </form>
-            <div class='form-heading'>AI Soloist</div>
+            <div class='form-heading enabled'>AI Soloist</div>
             <form id='soloist'>
                 <label>
                     <input class='form-input' type='radio' value='ai-true' name='ai' onchange="setAI('true')" />

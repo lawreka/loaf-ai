@@ -340,6 +340,54 @@ const patternDefaults = {
 //              RNN
 // ************************************
 
+let improvRNN = new music_rnn.MusicRNN('https://storage.googleapis.com/magentadata/js/checkpoints/music_rnn/chord_pitches_improv');
+let improvRNNLoaded = improvRNN.initialize();
+
+const generateSamples = async (guitarPart) => {
+    const samples = [];
+    for (let i = 0; i < 20; i++) {
+        const sample = await generateNewSolo(guitarPart);
+        samples.push(sample);
+    }
+    return samples;
+    
+}
+
+const generateNewSolo = async (guitarPart) => {
+    await improvRNNLoaded;
+
+    let sixteenthNoteTicks = Tone.Time('16n').toTicks();
+
+    let original = {
+        notes: guitarPatterns[guitarPart].map(([time, note]) => ({
+            pitch: Tone.Frequency(note).toMidi(),
+            quantizedStartStep: Tone.Time(time).toTicks() / sixteenthNoteTicks,
+            quantizedEndStep: Tone.Time(time).toTicks() / sixteenthNoteTicks + 1
+        })),
+        totalQuantizedSteps: 32,
+        quantizationInfo: { stepsPerQuarter: 4 }
+    }
+
+    let steps = 64;
+    let temperature = 1.1;
+    let chordProgression = ['G7', 'E7', 'C6', 'Cdim']
+
+    let result = await improvRNN.continueSequence(original, steps, temperature, chordProgression);
+
+    let newPart = convertNotesToTone(result.notes);
+    return newPart;
+}
+
+const convertNotesToTone = (notes) => {
+    let newPattern = []
+    for (let i = 0; i < notes.length; i++) {
+        let toneTime = Tone.Time(notes[i].quantizedStartStep / 8).toBarsBeatsSixteenths();
+        let toneNote = Tone.Frequency(notes[i].pitch, 'midi').toNote();
+        newPattern.push([toneTime, toneNote]);
+    }
+    return newPattern;
+}
+
 
 // ************************************
 //            Storage
@@ -361,7 +409,7 @@ const loadSoundPreferences = () => {
     const talking = talkingSelected ? talkingSelected : patternDefaults.talking;
     const ai = aiSelected ? aiSelected : 'false';
 
-    const musicPrefsObject = { chords, guitar, drums, nature, talkingSelected, ai }
+    const musicPrefsObject = { chords, guitar, drums, nature, talking, ai }
 
     return musicPrefsObject; 
 }
@@ -370,28 +418,54 @@ const loadSoundPreferences = () => {
 //          Music Controls
 // ************************************
 
-const loading = () => {
-    const fakeLoadingTimeout = setTimeout(() => {
-        loadingScreen.classList.remove('visible');
-        loadingScreen.classList.add('invisible');
-    }, 3000);
-}
+const triggerSampleGeneration = async (guitarPart) => {
+    const samples = await generateSamples(guitarPart);
+    return samples;
+};
 
 const playingState = () => {
     disableForm();
     startButton.disabled = true;
-}
+};
 
-const resetUI = () => {
-    enableForm();
-    startButton.disabled = false;
+// set up tone transport for selected loops
+const loadLoops = (selectedPatterns) => {
+    const { chords, drums, nature, talking } = selectedPatterns;
+
+    let chordPart = new Tone.Part((time, note) => {
+        chordSampler.triggerAttackRelease(note, 2.0, time);
+    }, chordPatterns[chords]).start();
+    chordPart.loop = true;
+    chordPart.loopStart = 0;
+    chordPart.loopEnd = '8';
+
+    let drumPart = new Tone.Part((time, drum) => {
+        drumPlayers.player(drum).start(time);
+    }, drumPatterns[drums]).start();
+    drumPart.loop = true;
+    drumPart.loopStart = 0;
+    drumPart.loopEnd = '8';
+
+    let naturePart = new Tone.Part((time, effect) => {
+        naturePlayers.player(effect).start(time);
+    }, naturePatterns[nature]).start();
+    naturePart.loop = true;
+    naturePart.loopStart = 0;
+    naturePart.loopEnd = '16';
+
+    let talkingPart = new Tone.Part((time, effect) => {
+        talkingPlayers.player(effect).start(time);
+    }, talkingPatterns[talking]).start();
+    talkingPart.loop = true;
+    talkingPart.loopStart = 0;
+    talkingPart.loopEnd = '32';
 }
 
 // ************************************
 //              UI
 // ************************************
 
-// Form input and storage of preferences
+// Form input and local storage setters
 const setChords = (input) => {
     localStorage.setItem('chords', JSON.stringify(input));
     localStorage.setItem('guitar', JSON.stringify(input));
@@ -413,56 +487,88 @@ const setAI = (input) => {
     localStorage.setItem('ai', JSON.stringify(input));
 }
 
-//Form control
+//Form control while playing
 const disableForm = () => {
     const formElements = document.getElementsByClassName('form-input');
+    const formLabels = document.getElementsByClassName('form-heading');
     for (let i = 0; i < formElements.length; i++) {
         formElements[i].disabled = true;
     }
-}
-
-const enableForm = () => {
-    const formElements = document.getElementsByClassName('form-input');
-    for (let i = 0; i < formElements.length; i++) {
-        formElements[i].disabled = false;
+    for (let i = 0; i < formLabels.length; i++) {
+        formLabels[i].classList.remove('enabled');
+        formLabels[i].classList.add('disabled');
     }
 }
 
 // Loading screen animation 
-const startLoadingAnimation = () => {
-    let i = 0;
-    const txt = 'L o a d i n g . . . ';
-    const speed = 150;
-    const typeWriter = () => {
-            if (i < txt.length) {
-                loadingText.innerHTML += txt.charAt(i);
-                i++;
-                setTimeout(typeWriter, speed);
-            }
-            if (i === txt.length) {
-                loadingText.innerHTML = '';
-                i = 0;
-            }
+const controlLoadingAnimation = (control) => {
+    if (control === 'start') {
+        loadingScreen.classList.remove('invisible');
+        loadingScreen.classList.add('visible');
     }
-    typeWriter();
-}
+    if (control === 'stop') {
+        loadingScreen.classList.remove('visible');
+        loadingScreen.classList.add('invisible');
+    }
+};
 
 
 
 // Event Listeners
 
-startButton.addEventListener('click', () => {
-    loadingScreen.classList.remove('invisible');
-    loadingScreen.classList.add('visible');
-    startLoadingAnimation();
-    const selections = loadSoundPreferences();
-    console.log(selections);
-    loading();
+startButton.addEventListener('click', async () => {
+    controlLoadingAnimation('start');
+    const selections = await loadSoundPreferences();
+    const { ai, guitar } = selections;
+    let aiSolos;
+
+    if (ai === 'true') {
+        aiSolos = await triggerSampleGeneration(guitar);
+
+        let guitarPart = new Tone.Part((time, note) => {
+            guitarSampler.triggerAttackRelease(note, 4.0, time);
+        }, guitarPatterns[guitar]).start();
+        guitarPart.loop = true;
+        guitarPart.loopStart = 0;
+        let guitarLoopLength = '8';
+        guitarPart.loopEnd = guitarLoopLength;
+
+        let aiPartIndex = 0;
+
+        Tone.Transport.scheduleRepeat(
+            function (time) {
+                if (aiPartIndex < aiSolos.length) {
+                    const aiSoloPart = aiSolos[aiPartIndex];
+                    guitarPart.clear();
+                    guitarLoopLength = '16';
+                    for (let i = 0; i < aiSoloPart.length; i++) {
+                        guitarPart.at(aiSoloPart[i][0], aiSoloPart[i][1]);
+                    }
+                    aiPartIndex = aiPartIndex + 1;
+                }
+                console.log(aiPartIndex);
+            },
+            "8:0:0",
+            "8:0:0"
+        );
+        
+    }
+
+    loadLoops(selections);
+
+    await Tone.loaded().then(() => {
+        Tone.start();
+    });
+    Tone.Transport.bpm.value = 90;
+    Tone.Transport.start();
+    Tone.context.lookAhead = 0.5;
+    controlLoadingAnimation('stop');
     playingState();
-    // retrieve settings from local storage and load them into the patterns
-    // generate and concatenate samples from the AI
 });
 
 stopButton.addEventListener('click', () => {
-    resetUI();
+    Tone.Transport.stop();
+    localStorage.clear();
+    location.reload();
+
 });
