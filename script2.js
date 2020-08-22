@@ -14,57 +14,49 @@ const stopButton = document.getElementById('stop');
 
 const chordSampler = new Tone.Sampler({
     urls: {
-        'A0': 'https://raw.githubusercontent.com/nbrosowsky/tonejs-instruments/master/samples/piano/A0.mp3',
-        'A1': 'https://raw.githubusercontent.com/nbrosowsky/tonejs-instruments/master/samples/piano/A1.mp3',
-        'A2': 'https://raw.githubusercontent.com/nbrosowsky/tonejs-instruments/master/samples/piano/A2.mp3',
-        'A3': 'https://raw.githubusercontent.com/nbrosowsky/tonejs-instruments/master/samples/piano/A3.mp3',
-        'A4': 'https://raw.githubusercontent.com/nbrosowsky/tonejs-instruments/master/samples/piano/A4.mp3'
+        'A0': 'assets/piano/piano-A0.mp3',
+        'A1': 'assets/piano/piano-A1.mp3',
+        'A2': 'assets/piano/piano-A2.mp3',
+        'A3': 'assets/piano/piano-A3.mp3',
+        'A4': 'assets/piano/piano-A4.mp3',
+        'A5': 'assets/piano/piano-A5.mp3',
+        'A6': 'assets/piano/piano-A6.mp3'
     }
-}).toDestination();
+});
 
 const guitarSampler = new Tone.Sampler({
     urls: {
-        'A1': 'https://raw.githubusercontent.com/nbrosowsky/tonejs-instruments/master/samples/guitar-acoustic/A1.mp3',
-        'A2': 'https://raw.githubusercontent.com/nbrosowsky/tonejs-instruments/master/samples/guitar-acoustic/A2.mp3',
-        'A3': 'https://raw.githubusercontent.com/nbrosowsky/tonejs-instruments/master/samples/guitar-acoustic/A3.mp3',
+        'A1': 'assets/guitar/guitar-A1.mp3',
+        'A2': 'assets/guitar/guitar-A2.mp3',
+        'A3': 'assets/guitar/guitar-A3.mp3',
+        'C4': 'assets/guitar/guitar-C4.mp3'
     }
 }).toDestination();
 
 const drumPlayers = new Tone.Players({
     urls: {
-        kick: 'assets/tero-kick.mp3',
-        kick2: 'assets/kick2.wav',
-        hatClosed: 'assets/tero-hatClosed.mp3',
-        hatClosed2: 'assets/tero-hatClosed2.mp3',
-        hatOpen: 'https://teropa.info/ext-assets/drumkit/hatOpen2.mp3',
-        snare: 'assets/snare.wav',
-        snare2: 'assets/tero-snare2.mp3',
-        snare3: 'assets/tero-snare3.mp3',
-        tomLow: 'https://teropa.info/ext-assets/drumkit/tomLow.mp3',
-        tomMid: 'https://teropa.info/ext-assets/drumkit/tomMid.mp3',
-        tomHigh: 'https://teropa.info/ext-assets/drumkit/tomHigh.mp3',
-        ride: 'https://teropa.info/ext-assets/drumkit/ride.mp3',
-        crash: 'https://teropa.info/ext-assets/drumkit/hatOpen.mp3',
-        sticks: 'assets/sticks.wav',
-    },
-    volume: -12
-}).toDestination();
+        heart: 'assets/drums/hunterHeartbeat.wav',
+        star: 'assets/drums/star.wav',
+        indigo: 'assets/drums/indigo.wav',
+    }
+});
 
 const naturePlayers = new Tone.Players({
     urls: {
-        rain: 'assets/rain.wav',
-        storm: 'assets/storm.wav',
-        vinyl: 'assets/vinyl.wav',
-        birds: 'assets/louderbirds.wav'
+        rain: 'assets/nature/rain.wav',
+        storm: 'assets/nature/storm.wav',
+        birds: 'assets/nature/louderbirds.wav'
     }
-}).toDestination();
+});
 
 const talkingPlayers = new Tone.Players({
     urls: {
-        her: 'assets/herquote.mp3', //very quiet file
-        exmachina: 'assets/exmachinaquote.mp3', //way too loud now
+        her: 'assets/talking/herquote.mp3', //very quiet file
+        exmachina: 'assets/talking/exmachinaquotevocals.wav', //way too loud now
+        irobot: 'assets/talking/irobotquote.mp3',
+        vinyl: 'assets/talking/vinyl.wav'
     }
-}).toDestination();
+});
 
 
 
@@ -72,8 +64,12 @@ const talkingPlayers = new Tone.Players({
 //             Effects
 // ************************************
 
+const chordsVol = new Tone.Volume(-10);
+const chordsReverb = new Tone.Reverb(1.5, 0.01, 0.8);
+chordSampler.chain(chordsVol, chordsReverb, Tone.Destination);
 
-
+const drumsVol = new Tone.Volume(-5);
+drumPlayers.chain(drumsVol, Tone.Destination);
 
 // ************************************
 //            Patterns
@@ -212,87 +208,14 @@ const chordPatterns = {
 };
 
 const drumPatterns = {
-    shoals: [
-        ["0:0:0", "kick"],
-        ["0:1:0", "hatClosed"],
-        ["0:1:2", "kick"],
-        ["0:2:0", "kick"],
-        ["0:3:0", "hatClosed"],
-        ["1:0:0", "kick"],
-        ["1:1:0", "hatClosed"],
-        ["1:2:0", "kick"],
-        ["1:2:3", "snare2"],
-        ["1:3:0", "hatClosed"],
-        ["1:3:2", "kick"],
-        ["1:3:2", "crash"],
-        ["2:0:0", "kick"],
-        ["2:1:0", "hatClosed"],
-        ["2:1:2", "kick"],
-        ["2:2:0", "kick"],
-        ["2:3:0", "hatClosed"],
-        ["3:0:0", "kick"],
-        ["3:1:0", "hatClosed"],
-        ["3:2:0", "kick"],
-        ["3:2:3", "kick"],
-        ["3:3:0", "hatClosed"],
-        ["3:3:2", "kick"],
-        ["3:3:2", "snare2"]
+    heart: [
+        ['0:0:0', 'heart']
     ],
-    lounge: [
-        ['0:0:0', 'kick2'],
-        ['0:1:0', 'snare'],
-        ['0:1:2', 'hatClosed'],
-        ['0:2:2', 'kick2'],
-        ['0:3:0', 'snare'],
-        ['0:3:3', 'hatClosed'],
-        ['1:0:0', 'kick2'],
-        ['1:1:0', 'snare'],
-        ['1:2:2', 'kick2'],
-        ['1:2:3', 'hatClosed'],
-        ['1:3:0', 'snare'],
-        ['1:3:2', 'hatOpen'],
-        ['2:0:0', 'kick2'],
-        ['2:0:3', 'hatClosed'],
-        ['2:1:0', 'snare'],
-        ['2:1:2', 'hatClosed'],
-        ['2:2:0', 'hatClosed'],
-        ['2:2:2', 'kick2'],
-        ['2:2:3', 'hatClosed'],
-        ['2:3:0', 'snare'],
-        ['2:3:1', 'hatClosed'],
-        ['3:0:0', 'kick2'],
-        ['3:1:0', 'snare'],
-        ['3:2:2', 'kick2'],
-        ['3:2:3', 'hatClosed'],
-        ['3:3:0', 'snare']
+    star: [
+        ['0:0:0', 'star']
     ],
-    anton: [
-        ['0:0:0', 'kick'],
-        ['0:0:2', 'hatClosed'],
-        ['0:1:0', 'kick'],
-        ['0:2:2', 'hatClosed'],
-        ['0:3:0', 'snare'],
-        ['0:3:2', 'hatClosed'],
-        ['1:0:2', 'hatClosed'],
-        ['1:1:0', 'snare'],
-        ['1:1:2', 'hatClosed2'],
-        ['1:2:2', 'kick'],
-        ['1:2:2', 'hatClosed'],
-        ['1:3:0', 'snare'],
-        ['1:3:2', 'hatClosed'],
-        ['2:0:0', 'kick'],
-        ['2:0:2', 'hatClosed'],
-        ['2:1:0', 'kick'],
-        ['2:2:2', 'hatClosed'],
-        ['2:3:0', 'snare'],
-        ['2:3:2', 'hatClosed'],
-        ['3:0:2', 'hatClosed'],
-        ['3:1:0', 'snare'],
-        ['3:1:2', 'hatClosed2'],
-        ['3:2:2', 'kick'],
-        ['3:2:2', 'hatClosed'],
-        ['3:3:0', 'snare'],
-        ['3:3:2', 'hatClosed']
+    indigo: [
+        ['0:0:0', 'indigo']
     ]
 };
 
@@ -310,28 +233,26 @@ const guitarPatterns = {
 
 const naturePatterns = {
     rain: [
-        ["0:0:0", "rain"],
-        ["0:0:0", "vinyl"]
+        ['0:0:0', 'rain']
     ],
     storm: [
-        ["0:0:0", "storm"],
-        ["0:0:0", "vinyl"]
+        ['0:0:0', 'storm']
     ],
     birds: [
-        ["0:0:0", "birds"],
-        ["0:0:0", "vinyl"]
+        ['0:0:0', 'birds']
     ]
 };
 
 const talkingPatterns = {
-    her: [["4:0:0", "her"]],
-    exmachina: [['4:0:0', 'exmachina']]
+    her: [['4:0:0', 'her'], ['4:0:0', 'vinyl']],
+    exmachina: [['4:0:0', 'exmachina'], ['4:0:0', 'vinyl']],
+    irobot: [['4:0:0', 'irobot'], ['4:0:0', 'vinyl']]
 };
 
 const patternDefaults = {
     chords: 'rainyDay',
     guitar: 'rainyDay',
-    drums: 'shoals',
+    drums: 'heart',
     nature: 'rain',
     talking: 'her'
 };
