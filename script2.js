@@ -31,7 +31,7 @@ const guitarSampler = new Tone.Sampler({
         'A3': 'assets/guitar/guitar-A3.mp3',
         'C4': 'assets/guitar/guitar-C4.mp3'
     }
-}).toDestination();
+});
 
 const drumPlayers = new Tone.Players({
     urls: {
@@ -44,16 +44,16 @@ const drumPlayers = new Tone.Players({
 const naturePlayers = new Tone.Players({
     urls: {
         rain: 'assets/nature/rain.wav',
-        storm: 'assets/nature/storm.wav',
-        birds: 'assets/nature/louderbirds.wav'
+        storm: 'assets/nature/longerstorm.wav',
+        waves: 'assets/nature/quietwaves.wav'
     }
 });
 
 const talkingPlayers = new Tone.Players({
     urls: {
-        her: 'assets/talking/herquote.mp3', //very quiet file
-        exmachina: 'assets/talking/exmachinaquotevocals.wav', //way too loud now
-        irobot: 'assets/talking/irobotquote.mp3',
+        her: 'assets/talking/herquote.mp3',
+        exmachina: 'assets/talking/exmachinaquotevocalslouder.wav',
+        irobot: 'assets/talking/irobotquotelouder.wav',
         vinyl: 'assets/talking/vinyl.wav'
     }
 });
@@ -64,12 +64,22 @@ const talkingPlayers = new Tone.Players({
 //             Effects
 // ************************************
 
-const chordsVol = new Tone.Volume(-10);
+const chordsVol = new Tone.Volume(-8);
 const chordsReverb = new Tone.Reverb(1.5, 0.01, 0.8);
 chordSampler.chain(chordsVol, chordsReverb, Tone.Destination);
 
 const drumsVol = new Tone.Volume(-5);
 drumPlayers.chain(drumsVol, Tone.Destination);
+
+const natureVol = new Tone.Volume(-5);
+naturePlayers.chain(natureVol, Tone.Destination);
+
+const talkingVol = new Tone.Volume(-5);
+talkingPlayers.chain(talkingVol, Tone.Destination);
+
+const guitarVol = new Tone.Volume(-5);
+const guitarReverb = new Tone.Reverb(1.5, 0.01, 0.2);
+guitarSampler.chain(guitarVol, guitarReverb, Tone.Destination);
 
 // ************************************
 //            Patterns
@@ -112,98 +122,46 @@ const chordPatterns = {
         ['3:2:0', 'G4']
     ],
     juniper: [
-        ['0:0:0', 'D#2'],
+        ['0:0:0', 'D2'],
+        ['0:0:0', 'F2'],
+        ['0:0:0', 'A2'],
+        ['0:0:0', 'C3'],
+        ['1:0:0', 'G2'],
+        ['1:0:0', 'B2'],
+        ['1:0:0', 'D3'],
+        ['1:0:0', 'F3'],
+        ['2:0:0', 'C2'],
+        ['2:0:0', 'E2'],
+        ['2:0:0', 'G3'],
+        ['2:0:0', 'B2'],
+        ['3:0:0', 'D#2'],
+        ['3:0:0', 'F#2'],
+        ['3:0:0', 'A2'],
+        ['3:0:0', 'C3'],
+    ],
+    jade: [
+        ['0:0:0', 'E2'],
         ['0:0:1', 'G2'],
-        ['0:0:2', 'A#2'],
-        ['0:0:3', 'D3'],
-        ['0:1:0', 'G3'],
-        ['0:1:1', 'A#2'],
-        ['0:1:2', 'D3'],
-        ['0:1:3', 'A#3'],
-        ['0:2:0', 'G4'],
-        ['1:0:0', 'D2'],
-        ['1:0:1', 'F2'],
-        ['1:0:2', 'A2'],
-        ['1:0:3', 'C3'],
-        ['1:1:0', 'A3'],
-        ['1:1:1', 'C4'],
+        ['0:0:2', 'B2'],
+        ['0:0:3', 'C3'],
+        ['0:1:0', 'E3'],
+        ['0:1:1', 'G3'],
+        ['1:0:0', 'A1'],
+        ['1:0:1', 'C2'],
+        ['1:0:2', 'E2'],
+        ['1:0:3', 'G2'],
+        ['1:1:0', 'A2'],
+        ['1:1:1', 'C3'],
         ['2:0:0', 'D2'],
         ['2:0:1', 'F2'],
         ['2:0:2', 'A2'],
-        ['2:0:3', 'A3'],
-        ['2:1:0', 'C4'],
-        ['2:1:1', 'E4'],
-        ['2:1:2', 'C4'],
-        ['2:1:3', 'A3'],
-        ['3:0:0', 'C#2'],
-        ['3:0:1', 'F2'],
-        ['3:0:2', 'G#2'],
-        ['3:0:3', 'C3'],
-        ['3:1:0', 'F3'],
-        ['3:1:1', 'C4'],
-        ['3:2:0', 'C#2'],
-        ['3:2:1', 'F2'],
-        ['3:2:2', 'F3'],
-        ['3:2:3', 'D#4'],
-        ['3:3:0', 'G4'],
-        ['3:3:1', 'A#2'],
-        ['3:3:2', 'D#4'],
-        ['3:3:3', 'G4']
-    ],
-    ghibli: [
-        ['0:0:0', 'C2'],
-        ['0:0:0', 'A2'],
-        ['0:0:0', 'E3'],
-        ['0:0:0', 'E4'],
-        ['0:0:2', 'D4'],
-        ['0:0:2', 'D3'],
-        ['0:1:0', 'E4'],
-        ['0:1:0', 'E3'],
-        ['0:1:2', 'A3'],
-        ['0:2:0', 'D2'],
-        ['0:2:0', 'B2'],
-        ['0:2:0', 'E3'],
-        ['0:2:0', 'E4'],
-        ['0:2:2', 'D4'],
-        ['0:2:2', 'D3'],
-        ['0:3:0', 'E4'],
-        ['0:3:0', 'E3'],
-        ['0:3:2', 'B3'],
-        ['1:0:0', 'C2'],
-        ['1:0:1', 'E2'],
-        ['1:0:2', 'G2'],
-        ['1:0:3', 'B2'],
-        ['1:1:1', 'E2'],
-        ['1:1:2', 'G2'],
-        ['1:1:3', 'B2'],
-        ['1:2:0', 'E3'],
-        ['2:0:0', 'C2'],
-        ['2:0:0', 'A2'],
-        ['2:0:0', 'E3'],
-        ['2:0:0', 'E4'],
-        ['2:0:2', 'D4'],
-        ['2:0:2', 'D3'],
-        ['2:1:0', 'E4'],
-        ['2:1:0', 'E3'],
-        ['2:1:2', 'A3'],
-        ['2:2:0', 'D2'],
-        ['2:2:0', 'B2'],
-        ['2:2:0', 'E3'],
-        ['2:2:0', 'E4'],
-        ['2:2:2', 'D4'],
-        ['2:2:2', 'D3'],
-        ['2:3:0', 'E4'],
-        ['2:3:0', 'E3'],
-        ['2:3:2', 'B3'],
-        ['3:0:0', 'C3'],
-        ['3:0:1', 'E3'],
-        ['3:0:2', 'G3'],
-        ['3:0:3', 'B3'],
-        ['3:1:0', 'C3'],
-        ['3:1:1', 'E3'],
-        ['3:1:2', 'G3'],
-        ['3:1:3', 'B3'],
-        ['3:2:0', 'E4']
+        ['2:0:3', 'C3'],
+        ['2:1:0', 'D3'],
+        ['2:1:1', 'F3'],
+        ['3:0:1', 'E2'],
+        ['3:0:2', 'G2'],
+        ['3:0:3', 'B2'],
+        ['3:1:0', 'D3'],
     ]
 };
 
@@ -228,8 +186,43 @@ const guitarPatterns = {
         ["2:1:1", "G3"],
         ["2:1:2", "A3"],
         ["2:1:3", "D4"],
+    ],
+    juniper: [
+        ['0:1:0', 'D3'],
+        ['0:1:1', 'C3'],
+        ['0:1:2', 'D3'],
+        ['1:1:0', 'B3'],
+        ['1:1:2', 'F3'],
+        ['2:1:0', 'G3'],
+        ['2:2:1', 'C3'],
+        ['2:2:2', 'D3'],
+        ['2:2:3', 'E3'],
+        ['3:0:0', 'D#3'],
+        ['3:1:0', 'C3'],
+        ['3:2:0', 'D#3'],
+    ],
+    jade: [
+        ['0:0:0', 'B3'],
+        ['0:0:1', 'G3'],
+        ['0:1:0', 'E3'],
+        ['0:3:3', 'D3'],
+        ['1:0:0', 'C3'],
+        ['1:3:3', 'D3'],
+        ['2:0:0', 'C3'],
+        ['2:0:1', 'D3'],
+        ['2:0:2', 'C3'],
+        ['2:0:3', 'D3'],
+        ['2:1:0', 'F3'],
+        ['3:1:0', 'A3'],
+        ['3:2:0', 'C4']
     ]
 };
+
+const guitarChords = {
+    rainyDay: ['G7', 'E7', 'C6', 'Cdim'],
+    juniper: ['Dm7', 'G7', 'Cmaj7', 'Ebdim7'],
+    jade: ['Cmaj7', 'Am7', 'Dm7', 'Em7']
+}
 
 const naturePatterns = {
     rain: [
@@ -238,8 +231,8 @@ const naturePatterns = {
     storm: [
         ['0:0:0', 'storm']
     ],
-    birds: [
-        ['0:0:0', 'birds']
+    waves: [
+        ['0:0:0', 'waves']
     ]
 };
 
@@ -291,7 +284,7 @@ const generateNewSolo = async (guitarPart) => {
 
     let steps = 64;
     let temperature = 1.1;
-    let chordProgression = ['G7', 'E7', 'C6', 'Cdim']
+    let chordProgression = guitarChords[guitarPart];
 
     let result = await improvRNN.continueSequence(original, steps, temperature, chordProgression);
 
@@ -372,14 +365,12 @@ const loadLoops = (selectedPatterns) => {
     }, naturePatterns[nature]).start();
     naturePart.loop = true;
     naturePart.loopStart = 0;
-    naturePart.loopEnd = '16';
+    naturePart.loopEnd = '24';
 
     let talkingPart = new Tone.Part((time, effect) => {
         talkingPlayers.player(effect).start(time);
     }, talkingPatterns[talking]).start();
-    talkingPart.loop = true;
-    talkingPart.loopStart = 0;
-    talkingPart.loopEnd = '32';
+    talkingPart.loop = false;
 }
 
 // ************************************
