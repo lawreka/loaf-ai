@@ -7,6 +7,7 @@ const startButton = document.getElementById('start');
 const loadingScreen = document.getElementById('loading');
 const loadingText = document.getElementById('loading-text');
 const stopButton = document.getElementById('stop');
+const toneWaves = new Tone.Waveform;
 
 // ************************************
 //           Instruments
@@ -484,3 +485,49 @@ stopButton.addEventListener('click', () => {
     location.reload();
 
 });
+
+
+// ************************************
+//              Visuals
+// ************************************
+
+const chordsAnalyzer = new Tone.Waveform();
+const drumsAnalyzer = new Tone.Waveform();
+
+function setup() {
+    const canvas = createCanvas(displayWidth, displayHeight);
+    canvas.parent('canvas-screen');
+
+    chordSampler.connect(chordsAnalyzer);
+    drumPlayers.connect(drumsAnalyzer);
+}
+
+function draw() {
+
+    background(255, 255, 255);
+
+    const chordsData = chordsAnalyzer.getValue();
+    const chordsDataLength = chordsData.length;
+
+    strokeWeight(1);
+    // fill(0, 0, 255);
+    beginShape();
+    for (var i = 0; i < chordsDataLength; i++) {
+        var x = map(i, 0, chordsDataLength, 0, width);
+        var y = map(chordsData[i], -1, 1, -height / 2, height / 2);
+        vertex(x, y + height / 2);
+    }
+    endShape();
+
+    const drumsData = drumsAnalyzer.getValue();
+    const drumsDataLength = drumsData.length;
+
+    strokeWeight(1);
+    beginShape();
+    for (var i = 0; i < drumsDataLength; i++) {
+        var x = map(i, 0, drumsDataLength, 0, width);
+        var y = map(drumsData[i], -1, 1, -height / 2, height / 2);
+        vertex(x, y + height / 2);
+    }
+    endShape();
+}
