@@ -16,17 +16,18 @@ body {
 }
 
 .enabled {
-    color: #4774ff;
+    color: #fff;
 }
 
 #loading {
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 3;
+    z-index: 2;
     width: 100vw;
     height: 100vh;
-    background-color: #fff;
+    background-image: url('assets/images/nightsky.jpg');
+    background-size: cover;
     justify-content: center;
     align-items: center;
 }
@@ -36,17 +37,22 @@ body {
     height: 120px;
 }
 
-#canvas-screen {
+#canvas {
+}
+
+#background {
     position: fixed;
     top: 0;
     left: 0;
     z-index: 0;
     width: 100vw;
     height: 100vh;
+    background-image: url('assets/images/nightsky.jpg');
+    background-size: cover;
 }
 
 #main-screen {
-     position: fixed;
+    position: fixed;
     top: 0;
     left: 0;
     z-index: 1;
@@ -74,6 +80,7 @@ label {
     max-width: 132px;
     display: flex;
     align-items: center;
+    color: #fff;
 }
 
 input {
@@ -91,4 +98,8 @@ input {
     border: 2px solid #a8a8a8;
     margin-right: 24px;
     font-size: 16px;
+}
+
+#defaultCanvas0 {
+    filter: opacity(0.1);
 }

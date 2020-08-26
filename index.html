@@ -4,7 +4,7 @@
     <title>c h i l l</title>
     <meta name='viewport' content='width=device-width,initial-scale=1'>
     <meta name='description' content='generative lo fi hip hop with magentajs'>
-    <link rel='shortcut icon' href='assets/images/flower.png' type='image/png'>
+    <link rel='shortcut icon' href='assets/images/nightskyemoji.png' type='image/png'>
     <script src='https://cdn.jsdelivr.net/npm/tone@14.7.39/build/Tone.min.js'></script>
     <script src='https://cdn.jsdelivr.net/npm/@magenta/music@^1.19.0'></script>
     <script src='https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-core@2.3.0/dist/tf-core.min.js'></script>
@@ -18,7 +18,7 @@
     <div id='loading' class='invisible'>
         <img id='spinner' src='assets/images/spinner.gif'>
     </div>
-    <div id='canvas-screen'></div>
+    <div id='background'></div>
     <div id='main-screen'>
         <div id='menu-wrapper'>
             <div class='form-heading enabled'>Chords</div>
@@ -84,13 +84,14 @@
             <div class='form-heading enabled'>AI Soloist</div>
             <form id='soloist'>
                 <label>
-                    <input class='form-input' type='radio' value='ai-true' name='ai' onchange="setAI('true')" />
+                    <input class='form-input' type='radio' value='ai-true' name='ai' onchange="setAI('true')" checked />
                     on
                 </label>
                 <label>
-                    <input class='form-input' type='radio' value='ai-false' name='ai' onchange="setAI('false')" checked />
+                    <input class='form-input' type='radio' value='ai-false' name='ai' onchange="setAI('false')" />
                     off
                 </label>
+                <div id='canvas'></div>
             </form>
             <div id='buttons-wrapper'>
                 <button id='start' class='button'>start</button>

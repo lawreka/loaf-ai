@@ -322,7 +322,7 @@ const loadSoundPreferences = () => {
     const drums = drumsSelected ? drumsSelected : patternDefaults.drums;
     const nature = natureSoundsSelected ? natureSoundsSelected : patternDefaults.nature;
     const talking = talkingSelected ? talkingSelected : patternDefaults.talking;
-    const ai = aiSelected ? aiSelected : 'false';
+    const ai = aiSelected ? aiSelected : 'true';
 
     const musicPrefsObject = { chords, guitar, drums, nature, talking, ai }
 
@@ -491,42 +491,35 @@ stopButton.addEventListener('click', () => {
 //              Visuals
 // ************************************
 
-const chordsAnalyzer = new Tone.Waveform();
-const drumsAnalyzer = new Tone.Waveform();
+const soloAnalyzer = new Tone.Waveform;
+const soloistForm = document.getElementById('soloist');
+const soloistFormWidth = soloistForm.offsetLeft + soloistForm.offsetWidth;
+const soloistFormHeight = soloistForm.offsetHeight;
 
 function setup() {
-    const canvas = createCanvas(displayWidth, displayHeight);
-    canvas.parent('canvas-screen');
+    const canvas = createCanvas(displayWidth, soloistFormHeight);
+    canvas.parent('canvas');
 
-    chordSampler.connect(chordsAnalyzer);
-    drumPlayers.connect(drumsAnalyzer);
+    guitarSampler.connect(soloAnalyzer);
+}
+
+function windowResized() {
+    resizeCanvas(displayWidth, soloistFormHeight);
 }
 
 function draw() {
 
-    background(255, 255, 255);
+    background(0);
 
-    const chordsData = chordsAnalyzer.getValue();
-    const chordsDataLength = chordsData.length;
-
-    strokeWeight(1);
-    // fill(0, 0, 255);
-    beginShape();
-    for (var i = 0; i < chordsDataLength; i++) {
-        var x = map(i, 0, chordsDataLength, 0, width);
-        var y = map(chordsData[i], -1, 1, -height / 2, height / 2);
-        vertex(x, y + height / 2);
-    }
-    endShape();
-
-    const drumsData = drumsAnalyzer.getValue();
-    const drumsDataLength = drumsData.length;
+    const soloData = soloAnalyzer.getValue();
+    const soloDataLength = soloData.length;
 
     strokeWeight(1);
+    stroke(255)
     beginShape();
-    for (var i = 0; i < drumsDataLength; i++) {
-        var x = map(i, 0, drumsDataLength, 0, width);
-        var y = map(drumsData[i], -1, 1, -height / 2, height / 2);
+    for (var i = 0; i < soloDataLength; i++) {
+        var x = map(i, 0, soloDataLength, 0, width);
+        var y = map(soloData[i], -1, 1, -height / 2, height / 2);
         vertex(x, y + height / 2);
     }
     endShape();
