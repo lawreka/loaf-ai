@@ -37,8 +37,6 @@ body {
     height: 120px;
 }
 
-#canvas {
-}
 
 #background {
     position: fixed;
@@ -100,6 +98,8 @@ input {
     font-size: 16px;
 }
 
-#defaultCanvas0 {
-    filter: opacity(0.1);
+#canvas {
+    position: fixed;
+    bottom: 0;
+    background-color: #080d22;
 }

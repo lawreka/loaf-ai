@@ -492,30 +492,28 @@ stopButton.addEventListener('click', () => {
 // ************************************
 
 const soloAnalyzer = new Tone.Waveform;
-const soloistForm = document.getElementById('soloist');
-const soloistFormWidth = soloistForm.offsetLeft + soloistForm.offsetWidth;
-const soloistFormHeight = soloistForm.offsetHeight;
 
 function setup() {
-    const canvas = createCanvas(displayWidth, soloistFormHeight);
+    const canvas = createCanvas(displayWidth, 50);
     canvas.parent('canvas');
 
     guitarSampler.connect(soloAnalyzer);
 }
 
 function windowResized() {
-    resizeCanvas(displayWidth, soloistFormHeight);
+    resizeCanvas(displayWidth, 50);
 }
 
 function draw() {
 
-    background(0);
+    background('#080d22');
 
     const soloData = soloAnalyzer.getValue();
     const soloDataLength = soloData.length;
 
     strokeWeight(1);
-    stroke(255)
+    stroke(255);
+    noFill();
     beginShape();
     for (var i = 0; i < soloDataLength; i++) {
         var x = map(i, 0, soloDataLength, 0, width);
