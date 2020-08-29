@@ -15,47 +15,47 @@ const toneWaves = new Tone.Waveform;
 
 const chordSampler = new Tone.Sampler({
     urls: {
-        'A0': 'assets/piano/piano-A0.mp3',
-        'A1': 'assets/piano/piano-A1.mp3',
-        'A2': 'assets/piano/piano-A2.mp3',
-        'A3': 'assets/piano/piano-A3.mp3',
-        'A4': 'assets/piano/piano-A4.mp3',
-        'A5': 'assets/piano/piano-A5.mp3',
-        'A6': 'assets/piano/piano-A6.mp3'
+        'A0': 'https://lofi-ai-assets.s3.amazonaws.com/piano/piano-A0.mp3',
+        'A1': 'https://lofi-ai-assets.s3.amazonaws.com/piano/piano-A1.mp3',
+        'A2': 'https://lofi-ai-assets.s3.amazonaws.com/piano/piano-A2.mp3',
+        'A3': 'https://lofi-ai-assets.s3.amazonaws.com/piano/piano-A3.mp3',
+        'A4': 'https://lofi-ai-assets.s3.amazonaws.com/piano/piano-A4.mp3',
+        'A5': 'https://lofi-ai-assets.s3.amazonaws.com/piano/piano-A5.mp3',
+        'A6': 'https://lofi-ai-assets.s3.amazonaws.com/piano/piano-A6.mp3'
     }
 });
 
 const guitarSampler = new Tone.Sampler({
     urls: {
-        'A1': 'assets/guitar/guitar-A1.mp3',
-        'A2': 'assets/guitar/guitar-A2.mp3',
-        'A3': 'assets/guitar/guitar-A3.mp3',
-        'C4': 'assets/guitar/guitar-C4.mp3'
+        'A1': 'https://lofi-ai-assets.s3.amazonaws.com/guitar/guitar-A1.mp3',
+        'A2': 'https://lofi-ai-assets.s3.amazonaws.com/guitar/guitar-A2.mp3',
+        'A3': 'https://lofi-ai-assets.s3.amazonaws.com/guitar/guitar-A3.mp3',
+        'C4': 'https://lofi-ai-assets.s3.amazonaws.com/guitar/guitar-C4.mp3'
     }
 });
 
 const drumPlayers = new Tone.Players({
     urls: {
-        heart: 'assets/drums/hunterHeartbeat.wav',
-        star: 'assets/drums/star.wav',
-        indigo: 'assets/drums/indigo.wav',
+        heart: 'https://lofi-ai-assets.s3.amazonaws.com/drums/hunterHeartbeat.wav',
+        star: 'https://lofi-ai-assets.s3.amazonaws.com/drums/star.wav',
+        indigo: 'https://lofi-ai-assets.s3.amazonaws.com/drums/indigo.wav',
     }
 });
 
 const naturePlayers = new Tone.Players({
     urls: {
-        rain: 'assets/nature/rain.wav',
-        storm: 'assets/nature/longerstorm.wav',
-        waves: 'assets/nature/quietwaves.wav'
+        rain: 'https://lofi-ai-assets.s3.amazonaws.com/nature/rain.wav',
+        storm: 'https://lofi-ai-assets.s3.amazonaws.com/nature/longerstorm.wav',
+        waves: 'https://lofi-ai-assets.s3.amazonaws.com/nature/quietwaves.wav'
     }
 });
 
 const talkingPlayers = new Tone.Players({
     urls: {
-        her: 'assets/talking/herquote.mp3',
-        exmachina: 'assets/talking/exmachinaquotevocalslouder.wav',
-        irobot: 'assets/talking/irobotquotelouder.wav',
-        vinyl: 'assets/talking/vinyl.wav'
+        her: 'https://lofi-ai-assets.s3.amazonaws.com/talking/herquote.mp3',
+        exmachina: 'https://lofi-ai-assets.s3.amazonaws.com/talking/exmachinaquotevocalslouder.wav',
+        irobot: 'https://lofi-ai-assets.s3.amazonaws.com/talking/irobotquotelouder.wav',
+        vinyl: 'https://lofi-ai-assets.s3.amazonaws.com/talking/vinyl.wav'
     }
 });
 
