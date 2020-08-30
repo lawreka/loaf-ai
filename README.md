@@ -1,3 +1,5 @@
+![loaf-ai-gif](https://raw.githubusercontent.com/lawreka/loaf-ai/master/loafai.gif)
+
 # loaf-ai
 
 loaf-ai was built for the BitRate: Machine Learning & Music hackathon sponsored by [Gray Area](https://grayarea.org/) and Google [Magenta](https://magenta.tensorflow.org/).
